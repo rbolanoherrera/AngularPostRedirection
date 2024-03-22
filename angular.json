@@ -63,7 +63,8 @@
               "browserTarget": "postRedirection:build:production"
             },
             "development": {
-              "browserTarget": "postRedirection:build:development"
+              "browserTarget": "postRedirection:build:development",
+              "port": 4300
             }
           },
           "defaultConfiguration": "development"
