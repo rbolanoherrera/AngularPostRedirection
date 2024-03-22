@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import * as CryptoJS from 'crypto-js';
-import { map } from 'rxjs';
 import Swal from 'sweetalert2';
+import { SDKService } from './services/sdk-service';
+import { InitialObject } from './interfaces/InitialObject';
 
 
 @Component({
@@ -20,8 +20,10 @@ export class AppComponent {
   private ENCRYPTION_KEY:string = 'your_secret_key_here'; // Replace with your secret key
   
 
+  private sdkService = inject(SDKService)
+
   constructor(private route:ActivatedRoute,
-    private router:Router, private http:HttpClient){
+    private router:Router){
 
   }
 
@@ -56,17 +58,21 @@ export class AppComponent {
 
     console.log("antes de enviar post al SDK");
 
-    this.http
-      .post(
-        'http://localhost:4200/api/initialize',
-        JSON.stringify(data)
-      ).pipe(
-        map(response => {
-          console.log("respuesta SDK: ", response)
-        })
-      ).subscribe(res => {
-        console.log("respuesta SDK1: ", res)
-      });
+    // this.http
+    //   .post(
+    //     'http://localhost:4200/api/initialize',
+    //     JSON.stringify(data)
+    //   ).pipe(
+    //     map(response => {
+    //       console.log("respuesta SDK: ", response)
+    //     })
+    //   ).subscribe(res => {
+    //     console.log("respuesta SDK1: ", res)
+    //   });
+
+    this.sdkService.postSDK(data).subscribe((resp: InitialObject) => {
+      console.log("respuesta SDK1: ", resp)
+    });
 
   }
 
